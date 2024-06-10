@@ -43,9 +43,14 @@ const Navbar = () => {
       {/* Desktop Menu */}
       <div className="hidden md:flex items-center justify-between px-5">
         <div className="flex items-center space-x-6">
-          <Link to="/" className="hover:text-gray-400 ">
-            Beranda
-          </Link>
+          <NavigationMenu>
+            <NavigationMenuList>
+              <NavigationMenuItem>
+                  Beranda
+              </NavigationMenuItem>
+            </NavigationMenuList>
+          </NavigationMenu>
+          
           <NavigationMenu>
             <NavigationMenuList className="flex space-x-6">
               <NavigationMenuItem>
@@ -56,7 +61,7 @@ const Navbar = () => {
                   <ul className="p-2 rounded-md shadow-lg space-y-2">
                     <li>
                       <Link
-                        to="/layanan/pengaduan"
+                        to={"/pengaduan"}
                         className="block px-4 py-2 hover:bg-gray-100 rounded-md"
                       >
                         Layanan Pengaduan
@@ -76,10 +81,12 @@ const Navbar = () => {
             </NavigationMenuList>
             <NavigationMenuViewport />
           </NavigationMenu>
-          <Link to="/login" className="hover:text-gray-400">
+        </div>
+      </div>
+      <div className="hidden md:flex items-center justify-between px-5">
+          <Link to="/login" className="text-white hover:text-gray-600 bg-gray-800 hover:bg-slate-300 px-5 py-2 rounded-2xl">
             Login
           </Link>
-        </div>
       </div>
 
       {/* Mobile Menu */}
