@@ -1,14 +1,11 @@
 import React from "react";
-import Navbar from "@/components/Navbar";
-import { Toaster } from "@/components/ui/toaster";
-import FormComplaint from "@/components/FormComplaint";
+import UserLayout from "@/templates/UserLayout";
 
 const Home = () => {
   return (
-    <>
-      <Navbar />
-     
-    </>
+    <UserLayout>
+      <h1>ini homeeeeeeeeeeeeeeeeee</h1>
+    </UserLayout>
   );
 };
 

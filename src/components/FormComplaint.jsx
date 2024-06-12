@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef } from "react"; // 1. Import useRef
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -28,7 +28,7 @@ import { toast } from "@/components/ui/use-toast";
 // Schema untuk valiudasi
 const FormSchema = z.object({
   customerId: z.string().min(1, {
-    message: "ID Pelanggan is required.",
+    message: "ID Pelanggan wajib diisi.",
   }),
   fullName: z.string().min(2, {
     message: "Nama Lengkap wajib diisi.",
@@ -40,14 +40,12 @@ const FormSchema = z.object({
     message: "Permasalahan wajib diisi.",
   }),
   address: z.string().min(5, {
-    message: "Alamat wajib diisi.",
+    message: "Alamat lengkap wajib diisi.",
   }),
   description: z.string().min(0, {
     message: "",
   }),
 });
-
-
 
 // Main
 const FormComplaint = () => {
@@ -59,12 +57,18 @@ const FormComplaint = () => {
       whatsappNumber: "",
       address: "",
       description: "",
+      inputTime: ""
     },
   });
 
-  // Function to handle form submission
+  const inputTimeRef = useRef("");
+
+  // untuk handle submit
   function onSubmit(data) {
     console.log("Form submitted with data:", data);
+    inputTimeRef.current = new Date().toISOString(); 
+    const newData = { ...data, inputTime: inputTimeRef.current };
+    console.log("Form data :", newData);
     toast({
       title: "Success!",
       description: (
@@ -74,9 +78,10 @@ const FormComplaint = () => {
       ),
       style: { backgroundColor: "green", color: "white" },
     });
+    form.reset();
   }
 
-  // Function to handle form errors
+  // Untuk handle eror
   function onError(errors) {
     console.log("Form errors:", errors);
     toast({
@@ -102,10 +107,10 @@ const FormComplaint = () => {
           render={({ field }) => (
             <FormItem>
               <FormLabel>ID Pelanggan</FormLabel>
+              <FormMessage />
               <FormControl>
                 <Input placeholder="Masukkan ID" type="number" {...field} />
               </FormControl>
-              <FormMessage />
             </FormItem>
           )}
         />
@@ -115,10 +120,10 @@ const FormComplaint = () => {
           render={({ field }) => (
             <FormItem>
               <FormLabel>Nama Lengkap</FormLabel>
+              <FormMessage />
               <FormControl>
                 <Input placeholder="Masukkan nama lengkap" {...field} />
               </FormControl>
-              <FormMessage />
             </FormItem>
           )}
         />
@@ -128,10 +133,10 @@ const FormComplaint = () => {
           render={({ field }) => (
             <FormItem>
               <FormLabel>Nomor Whatsapp</FormLabel>
+              <FormMessage />
               <FormControl>
                 <Input type="number" placeholder="+62" {...field} />
               </FormControl>
-              <FormMessage />
             </FormItem>
           )}
         />
@@ -142,10 +147,10 @@ const FormComplaint = () => {
             <FormItem>
               <FormLabel>Alamat Lengkap</FormLabel>
               {/* <FormDescription>Contoh : Dusun Mungkung RT 001/ RW 002, </FormDescription> */}
+              <FormMessage />
               <FormControl>
                 <Input placeholder="Masukkan alamat lengkap" {...field} />
               </FormControl>
-              <FormMessage />
             </FormItem>
           )}
         />
@@ -156,6 +161,7 @@ const FormComplaint = () => {
           render={({ field }) => (
             <FormItem>
               <FormLabel>Permasalahan</FormLabel>
+              <FormMessage />
               <Select onValueChange={field.onChange} defaultValue={field.value}>
                 <FormControl>
                   <SelectTrigger>
@@ -170,7 +176,6 @@ const FormComplaint = () => {
                   <SelectItem value="5">Wifi Lemot</SelectItem>
                 </SelectContent>
               </Select>
-              <FormMessage />
             </FormItem>
           )}
         />
@@ -181,13 +186,13 @@ const FormComplaint = () => {
           render={({ field }) => (
             <FormItem>
               <FormLabel>Deskripsi Permasalahan</FormLabel>
+              <FormMessage />
               <FormControl>
                 <Input
                   placeholder="Masukkan deskripsi permasalahan Anda"
                   {...field}
                 />
               </FormControl>
-              <FormMessage />
             </FormItem>
           )}
         />
