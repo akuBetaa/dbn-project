@@ -55,12 +55,12 @@ const CheckProgress = () => {
       </div>
       <div>
         {searchResults && (
-          <div className="mt-10 border border-border rounded-md p-5">
+          <div className="mt-3 ">
             <div className="flex flex-col text-center items-center font-semibold text-2xl">
-              <h1 className="py-2">Status Pengerjaan</h1>
+              <h1 className="py-5">Status Pengerjaan</h1>
               {/* <hr className="w-2/3 center" /> */}
             </div>
-            <div>
+            <div className="border border-border rounded-md p-5">
               <Table>
                 <TableBody>
                   <TableRow>

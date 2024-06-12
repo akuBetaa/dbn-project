@@ -12,8 +12,8 @@ import {
   NavigationMenuViewport,
 } from "@/components/ui/navigation-menu";
 
-import { Button } from "./ui/button";
-import Login from "./Login";
+import { Button } from "@/components/ui/button";
+import Login from "@/components/Login";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
