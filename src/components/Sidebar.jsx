@@ -12,7 +12,10 @@ import {
   NavigationMenuViewport,
 } from "@/components/ui/navigation-menu";
 
-import { Button } from "./ui/button";
+import { Button } from "@/components/ui/button";
+import { RxDashboard } from "react-icons/rx";
+import { SlPeople } from "react-icons/sl";
+import { MdOutlineHomeRepairService } from "react-icons/md";
 
 const Sidebar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -46,26 +49,33 @@ const Sidebar = () => {
         {/* Desktop Menu */}
         <div className="hidden md:flex px-5">
           <div className="flex flex-col space-x-6">
-            <NavigationMenu className="flex flex-col gap-3">
-              <NavigationMenuList>
+            <NavigationMenu className="flex flex-col gap-3 items-start">
+              <NavigationMenuList className="">
                 <NavigationMenuItem className="w-full">
-                  <Link to={"/"}>Dashboard</Link>
+                  <Link to={"/admin"} className="flex gap-2 items-center">
+                    <RxDashboard />
+                    Dashboard
+                  </Link>
                 </NavigationMenuItem>
               </NavigationMenuList>
               <NavigationMenuList>
                 <NavigationMenuItem className="w-full">
-                  <Link to={"/"}>Dashboard</Link>
+                <Link to={"/admin/list-pengaduan"} className="flex gap-2 items-center">
+                    <MdOutlineHomeRepairService />
+                    Layanan Aduan
+                  </Link>
                 </NavigationMenuItem>
               </NavigationMenuList>
               <NavigationMenuList>
                 <NavigationMenuItem className="w-full">
-                  <Link to={"/"}>Dashboard</Link>
+                <Link to={"/admin/list-pelanggan"} className="flex gap-2 items-center">
+                    <SlPeople />
+                    Data Pelanggan
+                  </Link>
                 </NavigationMenuItem>
               </NavigationMenuList>
-              <NavigationMenuList  className="bg-foreground hover:bg-muted-foreground text-white px-7">
-                <NavigationMenuItem>
-                    Logout
-                </NavigationMenuItem>
+              <NavigationMenuList className="bg-foreground hover:bg-muted-foreground text-white px-7">
+                <NavigationMenuItem>Logout</NavigationMenuItem>
               </NavigationMenuList>
             </NavigationMenu>
           </div>
