@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import {
   Dialog,
   DialogContent,
@@ -11,42 +12,38 @@ import {
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import axios from "axios";
 
 const Login = () => {
-  const [loginFailed, setLoginFailed] = useState("");
+  const [ email, setEmail ] = useState ("");
+  const [ password, setPassword ] = useState("");
+  const [ loginFailed, setLoginFailed] = useState ("");
+  const navigate = useNavigate();
 
-  const login = (data, callback) => {
-    setTimeout(() => {
-      if (data.customerID === "123456789" && data.password === "123456") {
-        callback(true, "mock-token");
-      } else {
-        callback(false, { response: { data: "ID Pelanggan & Password tidak sesuai" } });
+  const handleLogin = async (event) => {
+    event.preventDefault();
+    setLoginFailed("");
+
+    try {
+      const response = await axios.post("https://team-a-spk-internet-service-provider.vercel.app/api/v1/auth/login", {
+        email,
+        password,
+      });
+      if (response.data.message) {
+        setLoginFailed(response.data.message);
+        console.log("Yey Login Berhasil!!!");
+        navigate("/admin");
       }
-    }, 1000);
-  };
-
-  const handleLogin = (e) => {
-    e.preventDefault();
-
-    const data = {
-      customerID: e.target.customerID.value,
-      password: e.target.password.value,
-    };
-
-    login(data, (status, res) => {
-      if (status) {
-        localStorage.setItem("token", res);
-        const redirectUrl = process.env.NODE_ENV === "development"
-          ? "http://localhost:5173/admin/list-pelanggan"
-          : "http://localhost:5173/login";
-        window.location.href = redirectUrl;
+    } catch (error) {
+      if (error.response){
+        setLoginFailed(error.response.data.message || "Login Gagal, Silahkan Login Lagi");
       } else {
-        setLoginFailed(res.response.data);
+        setLoginFailed("Login Gagal, Silahkan Login Lagi");
       }
-    });
-  };
+    }
+  }
 
-  return (
+   return (
     <Dialog>
       <DialogTrigger asChild>
         <Button variant="outline">Login</Button>
@@ -55,18 +52,20 @@ const Login = () => {
         <DialogHeader>
           <DialogTitle className="text-center">Selamat Datang Kembali!</DialogTitle>
           <DialogDescription className="text-center">
-            Masukkan ID Pelanggan dan Password Anda.
+            Masukkan Email dan Password Anda.
           </DialogDescription>
         </DialogHeader>
         {loginFailed && <p className="text-red-500 text-center">{loginFailed}</p>}
         <div className="py-4">
           <form onSubmit={handleLogin} className="grid gap-4">
             <div className="flex flex-col gap-4">
-              <Label htmlFor="customerID">ID Pelanggan</Label>
+              <Label htmlFor="customerID">Email</Label>
               <Input
-                id="customerID"
-                type="number"
-                defaultValue="123456789"
+                id="email"
+                type="email"
+                value={email}
+                onChange={(event) => setEmail(event.target.value)}
+                placeholder = "example@gmail.com"
                 className="col-span-3"
               />
             </div>
@@ -75,7 +74,9 @@ const Login = () => {
               <Input
                 id="password"
                 type="password"
-                defaultValue="123456"
+                value={password}
+                onChange={(event) => setPassword(event.target.value)}
+                placeholder = "masukkan password"
                 className="col-span-3"
               />
             </div>
