@@ -122,7 +122,7 @@ const Navbar = () => {
                   <li>
                     <Link
                       to="/cek-pengaduan"
-                      className="block px-4 py-2 hover:bg-gray-500 hover:text-white rounded-md"
+                      className="block px-4 py-2 hover:bg-gray-600 hover:text-white rounded-md"
                     >
                       Cek Progres Pengaduan
                     </Link>

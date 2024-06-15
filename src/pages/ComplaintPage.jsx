@@ -1,7 +1,7 @@
 import React from "react";
 import { Toaster } from "@/components/ui/toaster";
 import FormComplaint from "@/components/FormComplaint";
-import UserLayout from "@/templates/UserLayout";
+import UserLayout from "@/components/layout/UserLayout";
 
 const ComplaintPage = () => {
   return (

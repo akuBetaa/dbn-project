@@ -1,5 +1,5 @@
 import CheckProgress from "@/components/CheckProgress";
-import UserLayout from "@/templates/UserLayout";
+import UserLayout from "@/components/layout/UserLayout";
 import React from "react";
 
 const CheckComplaintPage = () => {

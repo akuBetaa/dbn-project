@@ -13,6 +13,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { FaRegEdit } from "react-icons/fa";
 import { members } from "@/lib/data";
+import '@/index.css'
 
 const EditMembers = ({ member, onSave }) => {
   const [formData, setFormData] = useState(member);
@@ -33,14 +34,15 @@ const EditMembers = ({ member, onSave }) => {
           <FaRegEdit />
         </Button>
       </DialogTrigger>
-      <DialogContent className="sm:max-w-[425px]">
+      <DialogContent>
         <DialogHeader>
-          <DialogTitle className="text-center">Edit Member</DialogTitle>
+          <DialogTitle className="text-center">Edit Data Pelanggan</DialogTitle>
           <DialogDescription className="text-center">
             Update the member information below.
           </DialogDescription>
         </DialogHeader>
-        <div className="grid gap-4 py-4">
+
+        <div className="grid gap-4 py-5 px-1 overflow-y-scroll h-80 hide-scrollbar">
           <div className="flex flex-col gap-4">
             <Label htmlFor="customerID">Customer ID</Label>
             <Input
@@ -103,7 +105,7 @@ const EditMembers = ({ member, onSave }) => {
             />
           </div>
         </div>
-        <DialogFooter>
+        <DialogFooter className="px-1 flex md:flex-col-reverse md:space-x-2">
           <Button onClick={handleSubmit}>Simpan</Button>
         </DialogFooter>
       </DialogContent>

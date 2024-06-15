@@ -1,5 +1,5 @@
 import React from "react";
-import UserLayout from "@/templates/UserLayout";
+import UserLayout from "@/components/layout/UserLayout";
 
 const Home = () => {
   return (

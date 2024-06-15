@@ -41,5 +41,5 @@ export const fakeTokens = [
         whatsappNumber : '08123456789',
         address : 'Jl. ABC No. 123',
         role : 'admin',
-    }
+    },
   ]
