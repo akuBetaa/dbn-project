@@ -15,9 +15,9 @@ import { Label } from "@/components/ui/label";
 import axios from "axios";
 
 const Login = () => {
-  const [ email, setEmail ] = useState ("");
-  const [ password, setPassword ] = useState("");
-  const [ loginFailed, setLoginFailed] = useState ("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [loginFailed, setLoginFailed] = useState("");
   const navigate = useNavigate();
 
   const handleLogin = async (event) => {
@@ -29,21 +29,30 @@ const Login = () => {
         email,
         password,
       });
+
+      console.log("API Response:", response.data); 
+      const token = response.data._token;
+      localStorage.setItem("token", token);
+      console.log(token)
+
       if (response.data.message) {
         setLoginFailed(response.data.message);
-        console.log("Yey Login Berhasil!!!");
         navigate("/admin");
+        
+        console.log("Hurraa!!! LOGIN BERHASIL")
       }
     } catch (error) {
-      if (error.response){
-        setLoginFailed(error.response.data.message || "Login Gagal, Silahkan Login Lagi");
+      if (error.response) {
+        setLoginFailed(error.response.data.message);
+        console.log("Error Response:", error.response.data.message);
       } else {
         setLoginFailed("Login Gagal, Silahkan Login Lagi");
+        console.log("Login Gagal, Silahkan Login Lagi");
       }
     }
-  }
+  };
 
-   return (
+  return (
     <Dialog>
       <DialogTrigger asChild>
         <Button variant="outline">Login</Button>
@@ -59,13 +68,13 @@ const Login = () => {
         <div className="py-4">
           <form onSubmit={handleLogin} className="grid gap-4">
             <div className="flex flex-col gap-4">
-              <Label htmlFor="customerID">Email</Label>
+              <Label htmlFor="email">Email</Label>
               <Input
                 id="email"
                 type="email"
                 value={email}
                 onChange={(event) => setEmail(event.target.value)}
-                placeholder = "example@gmail.com"
+                placeholder="example@gmail.com"
                 className="col-span-3"
               />
             </div>
@@ -76,11 +85,11 @@ const Login = () => {
                 type="password"
                 value={password}
                 onChange={(event) => setPassword(event.target.value)}
-                placeholder = "masukkan password"
+                placeholder="masukkan password"
                 className="col-span-3"
               />
             </div>
-            
+
             <DialogFooter>
               <Button type="submit">Login</Button>
             </DialogFooter>

@@ -1,0 +1,20 @@
+# untuk melakukan pengetest an API 
+
+GET https://team-a-spk-internet-service-provider.vercel.app/api/v1/
+
+### LOGIN
+POST https://team-a-spk-internet-service-provider.vercel.app/api/v1/auth/login/
+content-type: application/json
+
+{
+    "email": "admin@example.com",
+    "password": "password"
+}
+
+### FETCH MEMBERS
+GET https://team-a-spk-internet-service-provider.vercel.app/api/v1/memberships/
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImNseGNvMWc3ZjAwMDRyYmMyZWdkOXRpNmsiLCJuYW1lIjoiSmFuZSBTbWl0aCIsImVtYWlsIjoiYWRtaW5AZXhhbXBsZS5jb20iLCJwaG9uZU51bWJlciI6Iis5ODc2NTQzMjEwIiwiaWF0IjoxNzE4NDU4MTQ0LCJleHAiOjE3MTg1NDQ1NDR9.hPAkSvCuXlBTbMbqbPrYA6N7Z8KFAX0-EYhjJbMumgY
+
+###
+GET https://team-a-spk-internet-service-provider.vercel.app/api/v1/memberships/clxcuhlsy0001eqerzpfesind
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImNseGNvMWc3ZjAwMDRyYmMyZWdkOXRpNmsiLCJuYW1lIjoiSmFuZSBTbWl0aCIsImVtYWlsIjoiYWRtaW5AZXhhbXBsZS5jb20iLCJwaG9uZU51bWJlciI6Iis5ODc2NTQzMjEwIiwiaWF0IjoxNzE4NDU4MTQ0LCJleHAiOjE3MTg1NDQ1NDR9.hPAkSvCuXlBTbMbqbPrYA6N7Z8KFAX0-EYhjJbMumgY

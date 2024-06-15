@@ -1,15 +1,11 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
-import { FaBars, FaTimes, FaChevronDown } from "react-icons/fa";
+import { Link, useNavigate } from "react-router-dom";
+import { FaBars, FaTimes } from "react-icons/fa";
 import ImageLogo from "@/assets/logo-dbn.png";
 import {
   NavigationMenu,
   NavigationMenuList,
   NavigationMenuItem,
-  NavigationMenuTrigger,
-  NavigationMenuContent,
-  NavigationMenuLink,
-  NavigationMenuViewport,
 } from "@/components/ui/navigation-menu";
 
 import { Button } from "@/components/ui/button";
@@ -19,14 +15,17 @@ import { MdOutlineHomeRepairService } from "react-icons/md";
 
 const Sidebar = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
   const toggleMenu = () => {
     setIsOpen(!isOpen);
   };
 
-  const toggleDropdown = () => {
-    setIsDropdownOpen(!isDropdownOpen);
+  const navigate = useNavigate();
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    console.log("Yey Logout Berhasil!!")
+    console.log("Token removed:", !localStorage.getItem("token"));
+    navigate("/");
   };
 
   return (
@@ -77,7 +76,11 @@ const Sidebar = () => {
                 </NavigationMenuItem>
               </NavigationMenuList>
               <NavigationMenuList className="bg-foreground hover:bg-muted-foreground text-white mx-3 mt-10">
-                <NavigationMenuItem>Logout</NavigationMenuItem>
+                <NavigationMenuItem>
+                  <button onClick={handleLogout}>
+                    Logout
+                  </button>
+                </NavigationMenuItem>
               </NavigationMenuList>
             </NavigationMenu>
           </div>
@@ -108,12 +111,9 @@ const Sidebar = () => {
               Data Pelanggan
             </Link>
 
-            <Link
-              to="/login"
-              className="w-full px-4 py-2 hover:bg-gray-400 hover:text-white rounded-md"
-            >
+            <Button onClick={handleLogout}>
               Logout
-            </Link>
+            </Button>
           </div>
         )}
       </nav>

@@ -1,18 +1,55 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import {
-    Table,
-    TableBody,
-    TableCaption,
-    TableCell,
-    TableHead,
-    TableHeader,
-    TableRow,
-  } from "@/components/ui/table"
+  Table,
+  TableBody,
+  TableCaption,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
 import EditMembers from "@/components/EditMembers";
 import DeleteMembers from "@/components/DeleteMembers";
-import { members } from "@/lib/data";
+import axios from "axios";
 
 const ListMembers = () => {
+  const [members, setMembers] = useState([]);
+
+  useEffect(() => {
+    const fetchMembers = async () => {
+      try {
+        const token = localStorage.getItem('token');
+        if (!token) {
+          console.error("Token not found");
+          return;
+        }
+
+        const response = await axios.get("https://team-a-spk-internet-service-provider.vercel.app/api/v1/memberships/", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        // Pastikan respons memiliki data yang sesuai dengan yang Anda harapkan
+        if (response.data.status && response.data.data) {
+          // Pastikan data yang diterima adalah array atau dapat diiterasi
+          if (Array.isArray(response.data.data)) {
+            setMembers(response.data.data);
+          } else {
+            setMembers([response.data.data]); // Jika respons adalah objek tunggal, ubah menjadi array
+          }
+          console.log("Data members retrieved successfully:", response.data.data);
+        } else {
+          console.error("Error fetching data:", response.data.message);
+        }
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+
+    fetchMembers();
+  }, []);
+
   return (
     <div>
       <Table>
@@ -30,21 +67,25 @@ const ListMembers = () => {
           </TableRow>
         </TableHeader>
         <TableBody>
-          {members.map((member, index) => (
-            <TableRow key={member.customerID}>
+          {members.map((data, index) => (
+            <TableRow key={data.id}>
               <TableCell className="font-medium">{index + 1}</TableCell>
-              <TableCell>{member.customerID}</TableCell>
-              <TableCell>{member.email}</TableCell>
-              <TableCell>{member.fullName}</TableCell>
-              <TableCell>{member.whatsappNumber}</TableCell>
-              <TableCell>{member.address}</TableCell>
-              <TableCell className={
-                  member.role === "member"
+              <TableCell>{data.user.name}</TableCell>
+              {/* <TableCell>{data.user.auth.email}</TableCell> */}
+              <TableCell>{data.user.phoneNumber}</TableCell>
+              <TableCell>{data.user.address}</TableCell>
+              <TableCell>{data.locationDistance}</TableCell>
+              <TableCell
+                className={
+                  data.user.role === "MEMBER"
                     ? "bg-yellow-200"
-                    : member.role === "admin"
+                    : data.user.role === "ADMIN"
                     ? "bg-red-200"
                     : ""
-                }>{member.role}</TableCell>
+                }
+              >
+                {data.user.role}
+              </TableCell>
               <TableCell className="flex flex-col md:flex-row justify-center items-center gap-2">
                 <EditMembers />
                 <DeleteMembers />
