@@ -20,7 +20,7 @@ const ListMembers = () => {
       try {
         const token = localStorage.getItem('token');
         if (!token) {
-          console.error("Token not found");
+          console.error("Token tidak ditemukan");
           return;
         }
 
@@ -30,15 +30,15 @@ const ListMembers = () => {
           },
         });
 
-        // Pastikan respons memiliki data yang sesuai dengan yang Anda harapkan
+        
         if (response.data.status && response.data.data) {
-          // Pastikan data yang diterima adalah array atau dapat diiterasi
+          
           if (Array.isArray(response.data.data)) {
             setMembers(response.data.data);
           } else {
-            setMembers([response.data.data]); // Jika respons adalah objek tunggal, ubah menjadi array
+            setMembers([response.data.data]); 
           }
-          console.log("Data members retrieved successfully:", response.data.data);
+          console.log("List Data Pelanggan berhasil tampil:", response.data.data);
         } else {
           console.error("Error fetching data:", response.data.message);
         }
@@ -61,7 +61,6 @@ const ListMembers = () => {
             <TableHead>Email</TableHead>
             <TableHead>No. WhatsApp</TableHead>
             <TableHead>Alamat</TableHead>
-            <TableHead>Jarak</TableHead>
             <TableHead>Role</TableHead>
             <TableHead></TableHead>
           </TableRow>
@@ -71,10 +70,9 @@ const ListMembers = () => {
             <TableRow key={data.id}>
               <TableCell className="font-medium">{index + 1}</TableCell>
               <TableCell>{data.user.name}</TableCell>
-              {/* <TableCell>{data.user.auth.email}</TableCell> */}
+              <TableCell>{data.user.auth.email}</TableCell>
               <TableCell>{data.user.phoneNumber}</TableCell>
               <TableCell>{data.user.address}</TableCell>
-              <TableCell>{data.locationDistance}</TableCell>
               <TableCell
                 className={
                   data.user.role === "MEMBER"
