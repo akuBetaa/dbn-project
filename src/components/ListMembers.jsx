@@ -8,8 +8,8 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import EditMembers from "@/components/EditMembers";
-import DeleteMembers from "@/components/DeleteMembers";
+import EditMembers from "@/components/member/EditMembers";
+import DeleteMembers from "@/components/member/DeleteMembers";
 import axios from "axios";
 
 const ListMembers = () => {
@@ -30,13 +30,13 @@ const ListMembers = () => {
           },
         });
 
-        
+
         if (response.data.status && response.data.data) {
-          
+
           if (Array.isArray(response.data.data)) {
             setMembers(response.data.data);
           } else {
-            setMembers([response.data.data]); 
+            setMembers([response.data.data]);
           }
           console.log("List Data Pelanggan berhasil tampil:", response.data.data);
         } else {
@@ -49,6 +49,18 @@ const ListMembers = () => {
 
     fetchMembers();
   }, []);
+
+  const handleSave = (updatedMember) => {
+    setMembers((prevMembers) =>
+      prevMembers.map((member) =>
+        member.id === updatedMember.id ? updatedMember : member
+      )
+    );
+  };
+
+  const handleDeleteSuccess = (id) => {
+    setComplaint(complaint.filter(item => item.id !== id));
+  };
 
   return (
     <div>
@@ -73,20 +85,18 @@ const ListMembers = () => {
               <TableCell>{data.user.auth.email}</TableCell>
               <TableCell>{data.user.phoneNumber}</TableCell>
               <TableCell>{data.user.address}</TableCell>
-              <TableCell
-                className={
-                  data.user.role === "MEMBER"
-                    ? "bg-yellow-200"
-                    : data.user.role === "ADMIN"
-                    ? "bg-red-200"
-                    : ""
-                }
-              >
-                {data.user.role}
+              <TableCell className="font-semibold">
+                {data.user.role === "MEMBER" ? "Member" :
+                  data.user.role === "ADMIN" ? "Admin" : ""}
               </TableCell>
               <TableCell className="flex flex-col md:flex-row justify-center items-center gap-2">
-                <EditMembers />
-                <DeleteMembers />
+                <EditMembers
+                  member={data} 
+                  onSave={handleSave} />
+                <DeleteMembers
+                  memberId={data.id}
+                  memberName={data.user.name}
+                  onDeleteSuccess={handleDeleteSuccess} />
               </TableCell>
             </TableRow>
           ))}

@@ -13,6 +13,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import axios from "axios";
+import { jwtDecode } from 'jwt-decode'
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -33,12 +34,20 @@ const Login = () => {
       console.log("API Response:", response.data); 
       const token = response.data._token;
       localStorage.setItem("token", token);
-      console.log(token)
+      console.log("Token:", token);
+
+      const decodedToken = jwtDecode(token);
+
 
       if (response.data.message) {
         setLoginFailed(response.data.message);
-        navigate("/admin");
         
+        if (decodedToken.role === 'MEMBER') {
+          navigate(`/user/${decodedToken.id}`);
+        } else if (decodedToken.role === 'ADMIN') {
+          navigate('/admin');
+        }
+
         console.log("Hurraa!!! LOGIN BERHASIL")
       }
     } catch (error) {

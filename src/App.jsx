@@ -7,20 +7,38 @@ import CheckComplaintPage from '@/pages/CheckComplaintPage';
 import MemberPage from '@/pages/admin/MemberPage';
 import ListComplaintPage from '@/pages/admin/ListComlaintPage';
 import Dashboard from '@/pages/admin/Dashboard';
+import ProtectedRoute from '@/components/ProtectedRoute';
+import ShowMembers from '@/components/ShowMembers';
+import ShowMemberPage from '@/pages/admin/ShowMemberPage';
 
 const App = () => {
   return (
     <Router>
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path='/layanan-pengaduan' element={<ComplaintPage />} />
-          <Route path='/cek-pengaduan' element={<CheckComplaintPage/>}/>
-          <Route path='/admin' element={ <Dashboard /> } />
-          <Route path='/admin/list-pelanggan' element={<MemberPage />}/>
-          <Route path='/admin/list-pengaduan' element={<ListComplaintPage />}/>
-          <Route path="*" element={<NotFound />} />
-          {/* <Route path='/coba' element={<TableMembers />}/> */}
-        </Routes>
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path='/layanan-pengaduan' element={<ComplaintPage />} />
+        <Route path='/cek-pengaduan' element={<CheckComplaintPage />} />
+        <Route path='/admin' element={
+          <ProtectedRoute>
+            <Dashboard />
+          </ProtectedRoute>
+        } />
+        <Route path='/admin/list-pelanggan' element={
+          <ProtectedRoute>
+            <MemberPage />
+          </ProtectedRoute>
+        } />
+        <Route path='/admin/list-pengaduan' element={
+          <ProtectedRoute>
+            <ListComplaintPage />
+          </ProtectedRoute>
+        } />
+        <Route path='/user/:id' element={
+          <ShowMemberPage />
+        } />
+        <Route path="*" element={<NotFound message="Halaman Tidak Ditemukan" />} />
+        <Route path='/coba' element={<ShowMembers />} />
+      </Routes>
     </Router>
   );
 };

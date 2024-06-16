@@ -1,20 +1,41 @@
 # untuk melakukan pengetest an API 
-
 GET https://team-a-spk-internet-service-provider.vercel.app/api/v1/
+
+### REGISTER
+POST https://team-a-spk-internet-service-provider.vercel.app/api/v1/auth/register
+Content-Type: application/json
+
+{
+    "name": "member baru",
+    "phoneNumber": "08111197811",
+    "email": "memberbar2@mail.com",
+    "password": "password",
+    "address" : "Talun, Blitar",
+}
 
 ### LOGIN
 POST https://team-a-spk-internet-service-provider.vercel.app/api/v1/auth/login/
 content-type: application/json
 
 {
-    "email": "admin@example.com",
+    "email": "viery15102002@gmail.com",
     "password": "password"
 }
 
 ### FETCH MEMBERS
 GET https://team-a-spk-internet-service-provider.vercel.app/api/v1/memberships/
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImNseGNvMWc3ZjAwMDRyYmMyZWdkOXRpNmsiLCJuYW1lIjoiSmFuZSBTbWl0aCIsImVtYWlsIjoiYWRtaW5AZXhhbXBsZS5jb20iLCJwaG9uZU51bWJlciI6Iis5ODc2NTQzMjEwIiwiaWF0IjoxNzE4NDU4MTQ0LCJleHAiOjE3MTg1NDQ1NDR9.hPAkSvCuXlBTbMbqbPrYA6N7Z8KFAX0-EYhjJbMumgY
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImNseGd5bGZiaDAwMDIxM3N6cHcxM3doNTAiLCJuYW1lIjoiSmFuZSBTbWl0aCIsImVtYWlsIjoidmllcnkxNTEwMjAwMkBnbWFpbC5jb20iLCJwaG9uZU51bWJlciI6Iis5ODc2NTQzMjEwIiwiaWF0IjoxNzE4NTI2Mjg4LCJleHAiOjE3MTg2MTI2ODh9.kf7_daKcCLg-oH-aSsdL-ZgIvhpxfBc1uL5EivwGxbo
 
 ###
 GET https://team-a-spk-internet-service-provider.vercel.app/api/v1/memberships/clxco1g7f0004rbc2egd9ti6k
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImNseGNvMWc3ZjAwMDRyYmMyZWdkOXRpNmsiLCJuYW1lIjoiSmFuZSBTbWl0aCIsImVtYWlsIjoiYWRtaW5AZXhhbXBsZS5jb20iLCJwaG9uZU51bWJlciI6Iis5ODc2NTQzMjEwIiwiaWF0IjoxNzE4NDU4MTQ0LCJleHAiOjE3MTg1NDQ1NDR9.hPAkSvCuXlBTbMbqbPrYA6N7Z8KFAX0-EYhjJbMumgY
+
+###
+PUT https://team-a-spk-internet-service-provider.vercel.app/api/v1/memberships/clxgylfkg000a13szxmt41afn
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImNseGd5bGZiaDAwMDIxM3N6cHcxM3doNTAiLCJuYW1lIjoiSmFuZSBTbWl0aCIsImVtYWlsIjoidmllcnkxNTEwMjAwMkBnbWFpbC5jb20iLCJwaG9uZU51bWJlciI6Iis5ODc2NTQzMjEwIiwiaWF0IjoxNzE4NTI2Mjg4LCJleHAiOjE3MTg2MTI2ODh9.kf7_daKcCLg-oH-aSsdL-ZgIvhpxfBc1uL5EivwGxbo
+
+{
+    "locationDistance": 0.5,
+    "problem": "DAMAGE",
+    "timeOfIncident": "2024-06-07T03:45:41.134Z"
+}
