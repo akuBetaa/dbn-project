@@ -56,7 +56,7 @@ const Login = () => {
     if (token) {
       const decoded = jwtDecode(token);
       console.log("Decoded Token:", decoded);
-      return decoded;
+      return decoded.role//;
     }
     return null;
   }
