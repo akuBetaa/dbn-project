@@ -33,7 +33,7 @@ const App = () => {
             <ListComplaintPage />
           </ProtectedRoute>
         } />
-        <Route path='/user/:id' element={
+        <Route path='/user' element={
           <ShowMemberPage />
         } />
         <Route path="*" element={<NotFound message="Halaman Tidak Ditemukan" />} />

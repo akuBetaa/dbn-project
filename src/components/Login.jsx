@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import {
   Dialog,
@@ -13,7 +13,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import axios from "axios";
-import { jwtDecode } from 'jwt-decode'
+import { jwtDecode } from 'jwt-decode';
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -31,25 +31,15 @@ const Login = () => {
         password,
       });
 
-      console.log("API Response:", response.data); 
+      console.log("API Response:", response.data);
+
       const token = response.data._token;
       localStorage.setItem("token", token);
       console.log("Token:", token);
 
-      const decodedToken = jwtDecode(token);
+      redirectToDashboard();
+      console.log("Hurraa!!! LOGIN BERHASIL")
 
-
-      if (response.data.message) {
-        setLoginFailed(response.data.message);
-        
-        if (decodedToken.role === 'MEMBER') {
-          navigate(`/user/${decodedToken.id}`);
-        } else if (decodedToken.role === 'ADMIN') {
-          navigate('/admin');
-        }
-
-        console.log("Hurraa!!! LOGIN BERHASIL")
-      }
     } catch (error) {
       if (error.response) {
         setLoginFailed(error.response.data.message);
@@ -60,6 +50,33 @@ const Login = () => {
       }
     }
   };
+
+  const getRoleFromToken = () => {
+    const token = localStorage.getItem("token");
+    if (token) {
+      const decoded = jwtDecode(token);
+      console.log("Decoded Token:", decoded);
+      return decoded;
+    }
+    return null;
+  }
+
+  const redirectToDashboard = () => {
+    const role = getRoleFromToken();
+    console.log("User Role:", role);
+    if (role === "ADMIN") {
+      navigate("/admin");
+    } else if (role === "MEMBER") {
+      navigate("/user");
+    }
+  }
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (token) {
+      redirectToDashboard();
+    }
+  }, []);
 
   return (
     <Dialog>
