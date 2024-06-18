@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import {
   Dialog,
@@ -13,7 +13,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import axios from "axios";
-import { jwtDecode } from 'jwt-decode';
+import { jwtDecode } from "jwt-decode";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -56,27 +56,21 @@ const Login = () => {
     if (token) {
       const decoded = jwtDecode(token);
       console.log("Decoded Token:", decoded);
-      return decoded.role//;
+      return { role: decoded.role, id: decoded.id };
     }
     return null;
-  }
+  };
 
   const redirectToDashboard = () => {
-    const role = getRoleFromToken();
-    console.log("User Role:", role);
-    if (role === "ADMIN") {
+    const user = getRoleFromToken();
+    if (!user) return; // Tambahkan pengecekan untuk null
+    console.log("User Role:", user.role);
+    if (user.role === "ADMIN") {
       navigate("/admin");
-    } else if (role === "MEMBER") {
-      navigate("/user");
+    } else if (user.role === "MEMBER") {
+      navigate(`/user/${user.id}`);
     }
-  }
-
-  useEffect(() => {
-    const token = localStorage.getItem("token");
-    if (token) {
-      redirectToDashboard();
-    }
-  }, []);
+  };
 
   return (
     <Dialog>
