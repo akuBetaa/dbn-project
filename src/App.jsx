@@ -12,6 +12,8 @@ import ShowMembers from '@/components/ShowMembers';
 import UserPage from '@/pages/UserPage';
 
 import { jwtDecode } from 'jwt-decode';
+import Register from './components/Register';
+import AuthPage from './pages/AuthPage';
 
 const App = () => {
   return (
@@ -38,7 +40,8 @@ const App = () => {
         <Route path="/user" element={<UserRedirect />} />
         <Route path="/user/:id" element={<UserPage />} />
         <Route path="*" element={<NotFound message="Halaman Tidak Ditemukan" />} />
-        <Route path='/coba' element={<ShowMembers />} />
+        <Route path='/coba' element={ <Register /> } />
+        <Route path='/coba2' element={ <AuthPage /> } />
       </Routes>
     </Router>
   );

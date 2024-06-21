@@ -14,6 +14,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import axios from "axios";
 import { jwtDecode } from "jwt-decode";
+import toast, { Toaster } from "react-hot-toast";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -73,19 +74,20 @@ const Login = () => {
   };
 
   return (
-    <Dialog>
-      <DialogTrigger asChild>
+    <div className="py-4 ">
+      <Toaster />
+      <DialogHeader>
+        <DialogTitle className="text-center">Selamat Datang Kembali!</DialogTitle>
+        <DialogDescription className="text-center">
+          Masukkan Email dan Password Anda.
+        </DialogDescription>
+      </DialogHeader>
+      {/* <DialogTrigger asChild>
         <Button variant="outline">Login</Button>
-      </DialogTrigger>
-      <DialogContent className="sm:max-w-[425px]">
-        <DialogHeader>
-          <DialogTitle className="text-center">Selamat Datang Kembali!</DialogTitle>
-          <DialogDescription className="text-center">
-            Masukkan Email dan Password Anda.
-          </DialogDescription>
-        </DialogHeader>
+      </DialogTrigger> */}
+      {/* <div className="sm:max-w-[425px]"> */}
         {loginFailed && <p className="text-red-500 text-center">{loginFailed}</p>}
-        <div className="py-4">
+        {/* <div className="py-4"> */}
           <form onSubmit={handleLogin} className="grid gap-4">
             <div className="flex flex-col gap-4">
               <Label htmlFor="email">Email</Label>
@@ -110,13 +112,13 @@ const Login = () => {
               />
             </div>
 
-            <DialogFooter>
+            {/* <DialogFooter> */}
               <Button type="submit">Login</Button>
-            </DialogFooter>
+            {/* </DialogFooter> */}
           </form>
         </div>
-      </DialogContent>
-    </Dialog>
+      // </div>
+    // </div>
   );
 };
 

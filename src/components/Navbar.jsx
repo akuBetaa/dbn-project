@@ -14,6 +14,7 @@ import {
 
 import { Button } from "@/components/ui/button";
 import Login from "@/components/Login";
+import AuthPage from "@/pages/AuthPage";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -89,7 +90,8 @@ const Navbar = () => {
           {/* <Button className="bg-foreground hover:bg-muted-foreground">
               Login
           </Button> */}
-          <Login />
+          {/* <Login /> */}
+          <AuthPage />
         </div>
 
         {/* Mobile Menu */}
@@ -136,7 +138,8 @@ const Navbar = () => {
             >
               Login
             </Link> */}
-            <Login />
+            {/* <Login /> */}
+            <AuthPage />
           </div>
         )}
       </nav>

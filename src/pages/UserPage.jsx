@@ -6,9 +6,11 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Select } from "@/components/ui/select";
 import toast, { Toaster } from "react-hot-toast";
+import { Skeleton } from "@/components/ui/skeleton"
 
 const UserPage = () => {
     const [user, setUser] = useState([]);
+    const [loading, setLoading] = useState(true);
     const [isEditing, setIsEditing] = useState(false);
     const [updatedData, setUpdatedData] = useState({
         locationDistance: 0,
@@ -39,6 +41,8 @@ const UserPage = () => {
             }
         } catch (error) {
             console.error("Error fetching data:", error);
+        } finally {
+            setLoading(false);
         }
     };
 
@@ -128,37 +132,62 @@ const UserPage = () => {
 
     return (
         <UserLayout>
-            <div><Toaster/></div>
+            <div><Toaster /></div>
             <div className="p-10 md:px-32">
                 <div className="flex flex-col font-semibold text-2xl">
                     <h1 className="py-5 md:px-8">Profil Pelanggan</h1>
                 </div>
                 <div className="md:px-5">
                     <Table>
-                        {user.map((data) => (
-                            <TableBody key={data.id}>
+                        {loading ? (
+                            <TableBody>
                                 <TableRow>
                                     <TableCell>ID Pelanggan</TableCell>
-                                    <TableCell>{data.userId}</TableCell>
+                                    <TableCell><Skeleton className="h-4 w-[250px]" /></TableCell>
                                 </TableRow>
                                 <TableRow>
                                     <TableCell>Nama Pelanggan</TableCell>
-                                    <TableCell>{data.user.name}</TableCell>
+                                    <TableCell><Skeleton className="h-4 w-[250px]" /></TableCell>
                                 </TableRow>
                                 <TableRow>
                                     <TableCell>Email</TableCell>
-                                    <TableCell>{data.user.auth.email}</TableCell>
+                                    <TableCell><Skeleton className="h-4 w-[250px]" /></TableCell>
                                 </TableRow>
                                 <TableRow>
-                                    <TableCell>Nomor Whatsapp</TableCell>
-                                    <TableCell>{data.user.phoneNumber}</TableCell>
+                                    <TableCell>Nomor WhatsApp</TableCell>
+                                    <TableCell><Skeleton className="h-4 w-[250px]" /></TableCell>
                                 </TableRow>
                                 <TableRow>
                                     <TableCell>Alamat Lengkap</TableCell>
-                                    <TableCell>{data.user.address}</TableCell>
+                                    <TableCell><Skeleton className="h-4 w-[250px]" /></TableCell>
                                 </TableRow>
                             </TableBody>
-                        ))}
+                        ) : (
+                            user.map((data) => (
+                                <TableBody key={data.id}>
+                                    <TableRow>
+                                        <TableCell>ID Pelanggan</TableCell>
+                                        <TableCell>{data.userId}</TableCell>
+                                    </TableRow>
+                                    <TableRow>
+                                        <TableCell>Nama Pelanggan</TableCell>
+                                        <TableCell>{data.user.name}</TableCell>
+                                    </TableRow>
+                                    <TableRow>
+                                        <TableCell>Email</TableCell>
+                                        <TableCell>{data.user.auth.email}</TableCell>
+                                    </TableRow>
+                                    <TableRow>
+                                        <TableCell>Nomor Whatsapp</TableCell>
+                                        <TableCell>{data.user.phoneNumber}</TableCell>
+                                    </TableRow>
+                                    <TableRow>
+                                        <TableCell>Alamat Lengkap</TableCell>
+                                        <TableCell>{data.user.address}</TableCell>
+                                    </TableRow>
+                                </TableBody>
+                            ))
+                        )}
                     </Table>
                 </div>
 
@@ -172,77 +201,110 @@ const UserPage = () => {
                         )}
                     </div>
                     <Table>
-                        {user.map((data) => (
-                            <TableBody key={data.id}>
+                        {loading ? (
+                            <TableBody>
                                 <TableRow>
                                     <TableCell>Nomor Token</TableCell>
-                                    <TableCell>{data.id}</TableCell>
+                                    <TableCell><Skeleton className="h-4 w-[250px]" /></TableCell>
+                                </TableRow>
+                                <TableRow>
+                                    <TableCell>Tanggal Pengaduan</TableCell>
+                                    <TableCell><Skeleton className="h-4 w-[250px]" /></TableCell>
                                 </TableRow>
                                 <TableRow>
                                     <TableCell>Permasalahan</TableCell>
-                                    <TableCell>
-                                        {isEditing ? (
-                                            <select
-                                                name="problem"
-                                                value={updatedData.problem}
-                                                onChange={handleChange}
-                                            >
-                                                <option value="INSTALLATION">Pemasangan WIFI</option>
-                                                <option value="DAMAGE">Wifi Mati</option>
-                                                <option value="DEVICE_PROBLEMS">Kerusakan Device</option>
-                                                <option value="SPEED_INCREASE">Penambahan Kecepatan</option>
-                                                <option value="REPORT">Wifi Lemot</option>
-                                            </select>
-                                        ) : (
-                                            <div>
-                                                {data.problem === "INSTALLATION" ? "Pemasangan WIFI" :
-                                                    data.problem === "DAMAGE" ? "Wifi Mati" :
-                                                        data.problem === "DEVICE_PROBLEMS" ? "Kerusakan Device" :
-                                                            data.problem === "SPEED_INCREASE" ? "Penambahan Kecepatan" :
-                                                                data.problem === "REPORT" ? "Wifi Lemot" : ""}
-                                            </div>
-                                        )}
-                                    </TableCell>
+                                    <TableCell><Skeleton className="h-4 w-[250px]" /></TableCell>
                                 </TableRow>
                                 <TableRow>
-                                    <TableCell>Jarak Lokasi</TableCell>
-                                    <TableCell>
-                                        {!isEditing ? (
-                                            data.locationDistance
-                                        ) : (
-                                            <Input
-                                                type="number"
-                                                name="locationDistance"
-                                                value={updatedData.locationDistance}
-                                                onChange={handleChange}
-                                            />
-                                        )}
-                                    </TableCell>
+                                    <TableCell>Jarak Lokas</TableCell>
+                                    <TableCell><Skeleton className="h-4 w-[250px]" /></TableCell>
                                 </TableRow>
                                 <TableRow>
-                                    <TableCell>Deskripsi Permasalahan</TableCell>
-                                    <TableCell>
-                                        {!isEditing ? (
-                                            data.description
-                                        ) : (
-                                            <Input
-                                                name="description"
-                                                value={updatedData.description}
-                                                onChange={handleChange}
-                                            />
-                                        )}
-                                    </TableCell>
+                                    <TableCell>Deksripsi Permasalahan</TableCell>
+                                    <TableCell><Skeleton className="h-4 w-[250px]" /></TableCell>
                                 </TableRow>
                                 <TableRow>
                                     <TableCell>Status Penanganan</TableCell>
-                                    <TableCell className={getStatusClassName(data.status)}>
-                                        {data.status === "PENDING" ? "DALAM ANTRIAN" :
-                                            data.status === "PROCESS" ? "SEDANG DIKERJAKAN" :
-                                                data.status === "FINISHED" ? "SELESAI" : ""}
-                                    </TableCell>
+                                    <TableCell><Skeleton className="h-4 w-[250px]" /></TableCell>
                                 </TableRow>
                             </TableBody>
-                        ))}
+                        ) : (
+                            user.map((data) => (
+                                <TableBody key={data.id}>
+                                    <TableRow>
+                                        <TableCell>Nomor Token</TableCell>
+                                        <TableCell>{data.id}</TableCell>
+                                    </TableRow>
+                                    <TableRow>
+                                        <TableCell>Tanggal Pengaduan</TableCell>
+                                        <TableCell>{data.timeOfIncident}</TableCell>
+                                    </TableRow>
+                                    <TableRow>
+                                        <TableCell>Permasalahan</TableCell>
+                                        <TableCell>
+                                            {isEditing ? (
+                                                <select
+                                                    name="problem"
+                                                    value={updatedData.problem}
+                                                    onChange={handleChange}
+                                                >
+                                                    <option value="INSTALLATION">Pemasangan WIFI</option>
+                                                    <option value="DAMAGE">Wifi Mati</option>
+                                                    <option value="DEVICE_PROBLEMS">Kerusakan Device</option>
+                                                    <option value="SPEED_INCREASE">Penambahan Kecepatan</option>
+                                                    <option value="REPORT">Wifi Lemot</option>
+                                                </select>
+                                            ) : (
+                                                <div>
+                                                    {data.problem === "INSTALLATION" ? "Pemasangan WIFI" :
+                                                        data.problem === "DAMAGE" ? "Wifi Mati" :
+                                                            data.problem === "DEVICE_PROBLEMS" ? "Kerusakan Device" :
+                                                                data.problem === "SPEED_INCREASE" ? "Penambahan Kecepatan" :
+                                                                    data.problem === "REPORT" ? "Wifi Lemot" : ""}
+                                                </div>
+                                            )}
+                                        </TableCell>
+                                    </TableRow>
+                                    <TableRow>
+                                        <TableCell>Jarak Lokasi</TableCell>
+                                        <TableCell>
+                                            {!isEditing ? (
+                                                data.locationDistance
+                                            ) : (
+                                                <Input
+                                                    type="number"
+                                                    name="locationDistance"
+                                                    value={updatedData.locationDistance}
+                                                    onChange={handleChange}
+                                                />
+                                            )}
+                                        </TableCell>
+                                    </TableRow>
+                                    <TableRow>
+                                        <TableCell>Deskripsi Permasalahan</TableCell>
+                                        <TableCell>
+                                            {!isEditing ? (
+                                                data.description
+                                            ) : (
+                                                <Input
+                                                    name="description"
+                                                    value={updatedData.description}
+                                                    onChange={handleChange}
+                                                />
+                                            )}
+                                        </TableCell>
+                                    </TableRow>
+                                    <TableRow>
+                                        <TableCell>Status Penanganan</TableCell>
+                                        <TableCell className={getStatusClassName(data.status)}>
+                                            {data.status === "PENDING" ? "DALAM ANTRIAN" :
+                                                data.status === "PROCESS" ? "SEDANG DIKERJAKAN" :
+                                                    data.status === "FINISHED" ? "SELESAI" : ""}
+                                        </TableCell>
+                                    </TableRow>
+                                </TableBody>
+                            ))
+                        )}
                     </Table>
                 </div>
             </div>
