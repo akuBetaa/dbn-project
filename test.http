@@ -18,7 +18,7 @@ POST https://team-a-spk-internet-service-provider.vercel.app/api/v1/auth/login/
 content-type: application/json
 
 {
-    "email": "viery15102002@gmail.com",
+    "email": "member@example.com",
     "password": "password"
 }
 
@@ -31,11 +31,15 @@ GET https://team-a-spk-internet-service-provider.vercel.app/api/v1/memberships/c
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImNseGNvMWc3ZjAwMDRyYmMyZWdkOXRpNmsiLCJuYW1lIjoiSmFuZSBTbWl0aCIsImVtYWlsIjoiYWRtaW5AZXhhbXBsZS5jb20iLCJwaG9uZU51bWJlciI6Iis5ODc2NTQzMjEwIiwiaWF0IjoxNzE4NDU4MTQ0LCJleHAiOjE3MTg1NDQ1NDR9.hPAkSvCuXlBTbMbqbPrYA6N7Z8KFAX0-EYhjJbMumgY
 
 ###
-PUT https://team-a-spk-internet-service-provider.vercel.app/api/v1/memberships/clxgylfkg000a13szxmt41afn
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImNseGd5bGZiaDAwMDIxM3N6cHcxM3doNTAiLCJuYW1lIjoiSmFuZSBTbWl0aCIsImVtYWlsIjoidmllcnkxNTEwMjAwMkBnbWFpbC5jb20iLCJwaG9uZU51bWJlciI6Iis5ODc2NTQzMjEwIiwiaWF0IjoxNzE4NTI2Mjg4LCJleHAiOjE3MTg2MTI2ODh9.kf7_daKcCLg-oH-aSsdL-ZgIvhpxfBc1uL5EivwGxbo
+POST https://team-a-spk-internet-service-provider.vercel.app/api/v1/memberships
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImNseGd5bGYzazAwMDAxM3N6ZWF6eTJncGoiLCJuYW1lIjoiSm9obiBEb2UiLCJlbWFpbCI6Im1lbWJlckBleGFtcGxlLmNvbSIsInBob25lTnVtYmVyIjoiKzEyMzQ1Njc4OTAiLCJyb2xlIjoiTUVNQkVSIiwiYWRkcmVzcyI6IkJsaXRhciIsImlhdCI6MTcxOTA1MzA1MCwiZXhwIjoxNzE5MTM5NDUwfQ.JaMVvhM5pBxHjfGVJLUQcd-sDTAEW7bisf0x9BCoZro
+Content-Type: application/json
 
 {
-    "locationDistance": 0.5,
+    "locationDistance": 0.8,
     "problem": "DAMAGE",
-    "timeOfIncident": "2024-06-07T03:45:41.134Z"
+    "status": "PENDING",
+    "description": "masalah hidup",
+    "timeOfIncident": "2024-06-07T03:45:41.134Z",
+    "cost": 200
 }

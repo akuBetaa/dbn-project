@@ -1,13 +1,15 @@
-import React, { useRef } from "react"; // 1. Import useRef
+import React, { useRef, useState, useEffect } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
+import axios from 'axios';
+import { toast, Toaster } from 'react-hot-toast';
+import {jwtDecode} from "jwt-decode"; // Perbaikan: Ubah 'jwtDecode' ke 'jwtDecode' yang benar.
 
 import { Button } from "@/components/ui/button";
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -23,119 +25,185 @@ import {
 } from "@/components/ui/select";
 
 import { Input } from "@/components/ui/input";
-import { toast } from "@/components/ui/use-toast";
+import { useNavigate } from "react-router-dom";
 
-// Schema untuk valiudasi
+// Schema untuk validasi
 const FormSchema = z.object({
-  customerId: z.string().min(1, {
-    message: "ID Pelanggan wajib diisi.",
-  }),
-  fullName: z.string().min(2, {
-    message: "Nama Lengkap wajib diisi.",
-  }),
-  whatsappNumber: z.string().min(10, {
-    message: "Isi nomor telepon dengan benar.",
-  }),
-  problem: z.string().min(0, {
+  problem: z.string().min(1, {
     message: "Permasalahan wajib diisi.",
   }),
-  address: z.string().min(5, {
-    message: "Alamat lengkap wajib diisi.",
-  }),
-  description: z.string().min(0, {
-    message: "",
-  }),
+  locationDistance: z.preprocess((val) => Number(val), z.number().min(1, {
+    message: "Jarak lokasi wajib diisi dan harus lebih besar dari 0.",
+  })),
+  description: z.string().optional(),
 });
 
 // Main
 const FormComplaint = () => {
+  const navigate = useNavigate();
   const form = useForm({
     resolver: zodResolver(FormSchema),
     defaultValues: {
-      customerId: "",
-      fullName: "",
-      whatsappNumber: "",
-      address: "",
+      locationDistance: 0,
+      problem: "",
       description: "",
-      inputTime: ""
+      timeOfIncident: "",
+      cost: "",
+      status: ""
     },
   });
 
-  const inputTimeRef = useRef("");
+  const timeOfIncidentRef = useRef("");
+  const [isLoggedIn, setIsLoggedIn] = useState(() => {
+    const token = localStorage.getItem('token');
+    return !!token;
+  });
+
+  const [userData, setUserData] = useState({
+    id: "",
+    email: "",
+    name: "",
+    phoneNumber: "",
+    address: ""
+  });
+
+  useEffect(() => {
+    if (isLoggedIn) {
+      const token = localStorage.getItem('token');
+      console.log("Token : " + token);
+      
+      if (token) {
+        const decodedToken = jwtDecode(token);
+        console.log('Decoded token:', decodedToken);
+        setUserData({
+          id: decodedToken.id ?? "",
+          email: decodedToken.email ?? "",
+          name: decodedToken.name ?? "",
+          phoneNumber: decodedToken.phoneNumber ?? "",
+          address: decodedToken.address ?? ""
+        });
+      }
+    }
+  }, [isLoggedIn]);
 
   // untuk handle submit
-  function onSubmit(data) {
+  async function onSubmit(data) {
+    if (!isLoggedIn) {
+      toast.error("Lakukan login terlebih dahulu");
+      return;
+    }
+
     console.log("Form submitted with data:", data);
-    inputTimeRef.current = new Date().toISOString(); 
-    const newData = { ...data, inputTime: inputTimeRef.current };
-    console.log("Form data :", newData);
-    toast({
-      title: "Success!",
-      description: (
-        <p className="w-[340px] rounded-md text-white">
-          Data Berhasil di Input!
-        </p>
-      ),
-      style: { backgroundColor: "green", color: "white" },
-    });
-    form.reset();
+
+    timeOfIncidentRef.current = new Date().toISOString();
+    const newData = {
+      locationDistance: parseInt(data.locationDistance, 10), // Pastikan konversi ke int
+      problem: data.problem,
+      description: data.description,
+      timeOfIncident: timeOfIncidentRef.current,
+      cost: 200,
+      status: "PENDING"
+    };
+    
+    console.log("Form data to submit:", newData);
+    
+    try {
+      const token = localStorage.getItem('token');
+      const response = await axios.post(
+        "https://team-a-spk-internet-service-provider.vercel.app/api/v1/memberships",
+        newData,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        }
+      );
+      console.log("API response:", response.data);
+      toast.success("Data Berhasil di Input!");
+      form.reset();
+      navigate("/user");
+    } catch (error) {
+      console.log("API error:", error.response.data);
+      toast.error("Terjadi kesalahan, coba lagi nanti.");
+    }
   }
 
   // Untuk handle eror
   function onError(errors) {
     console.log("Form errors:", errors);
-    toast({
-      title: "Error!",
-      description: (
-        <p className="w-[340px] rounded-md text-white">
-          Pastikan isianmu benar
-        </p>
-      ),
-      style: { backgroundColor: "red", color: "white" },
-    });
+    toast.error("Pastikan isianmu benar");
   }
+
+  // Event handler untuk input fields
+  const handleInputClick = (e) => {
+    if (!isLoggedIn) {
+      e.preventDefault();
+      toast.error("Lakukan login terlebih dahulu");
+    }
+  };
 
   return (
     <Form {...form}>
+      <Toaster /> 
       <form
         onSubmit={form.handleSubmit(onSubmit, onError)}
         className="w-2/3 space-y-6"
       >
         <FormField
           control={form.control}
-          name="customerId"
+          name="email"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>ID Pelanggan</FormLabel>
+              <FormLabel>Email Pelanggan</FormLabel>
               <FormMessage />
               <FormControl>
-                <Input placeholder="Masukkan ID" type="number" {...field} />
+                <Input 
+                  placeholder="Masukkan email Anda" 
+                  type="text" 
+                  {...field} 
+                  value={userData.email || ""} 
+                  onClick={handleInputClick}
+                  readOnly={isLoggedIn} 
+                />
               </FormControl>
             </FormItem>
           )}
         />
         <FormField
           control={form.control}
-          name="fullName"
+          name="name"
           render={({ field }) => (
             <FormItem>
               <FormLabel>Nama Lengkap</FormLabel>
               <FormMessage />
               <FormControl>
-                <Input placeholder="Masukkan nama lengkap" {...field} />
+                <Input 
+                  placeholder="Masukkan nama lengkap" 
+                  {...field} 
+                  value={userData.name || ""}
+                  onClick={handleInputClick}
+                  readOnly={isLoggedIn} 
+                />
               </FormControl>
             </FormItem>
           )}
         />
         <FormField
           control={form.control}
-          name="whatsappNumber"
+          name="phoneNumber"
           render={({ field }) => (
             <FormItem>
               <FormLabel>Nomor Whatsapp</FormLabel>
               <FormMessage />
               <FormControl>
-                <Input type="number" placeholder="+62" {...field} />
+                <Input 
+                  type="tel" 
+                  placeholder="+62" 
+                  {...field} 
+                  value={userData.phoneNumber || ""} 
+                  readOnly={isLoggedIn}
+                  onClick={handleInputClick} 
+                />
               </FormControl>
             </FormItem>
           )}
@@ -146,10 +214,15 @@ const FormComplaint = () => {
           render={({ field }) => (
             <FormItem>
               <FormLabel>Alamat Lengkap</FormLabel>
-              {/* <FormDescription>Contoh : Dusun Mungkung RT 001/ RW 002, </FormDescription> */}
               <FormMessage />
               <FormControl>
-                <Input placeholder="Masukkan alamat lengkap" {...field} />
+                <Input 
+                  placeholder="Masukkan alamat lengkap" 
+                  {...field} 
+                  value={userData.address || ""} 
+                  onClick={handleInputClick} 
+                  readOnly={isLoggedIn} 
+                />
               </FormControl>
             </FormItem>
           )}
@@ -162,20 +235,44 @@ const FormComplaint = () => {
             <FormItem>
               <FormLabel>Permasalahan</FormLabel>
               <FormMessage />
-              <Select onValueChange={field.onChange} defaultValue={field.value}>
+              <Select 
+                onValueChange={field.onChange} 
+                defaultValue={field.value || ""} 
+                onClick={handleInputClick}
+              >
                 <FormControl>
                   <SelectTrigger>
                     <SelectValue placeholder="--pilih--" />
                   </SelectTrigger>
                 </FormControl>
                 <SelectContent>
-                  <SelectItem value="1">Pemasalangan Wifi</SelectItem>
-                  <SelectItem value="2">Kerusakan Device</SelectItem>
-                  <SelectItem value="3">Wifi Mati</SelectItem>
-                  <SelectItem value="4">Penambahan Kecepatan</SelectItem>
-                  <SelectItem value="5">Wifi Lemot</SelectItem>
+                  <SelectItem value="INSTALLATION">Pemasalahan Wifi</SelectItem>
+                  <SelectItem value="DEVICE_PROBLEMS">Kerusakan Device</SelectItem>
+                  <SelectItem value="DAMAGE">Wifi Mati</SelectItem>
+                  <SelectItem value="SPEED_INCREASE">Penambahan Kecepatan</SelectItem>
+                  <SelectItem value="REPORT">Wifi Lemot</SelectItem>
                 </SelectContent>
               </Select>
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          control={form.control}
+          name="locationDistance"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Jarak Lokasi (km)</FormLabel>
+              <FormMessage />
+              <FormControl>
+                <Input
+                  placeholder="Masukkan jarak rumah dengan DBN Kamil dalam satuan km"
+                  {...field}
+                  value={field.value || ""} 
+                  onChange={(e) => field.onChange(parseInt(e.target.value, 10))} // Konversi ke int saat input
+                  onClick={handleInputClick} 
+                />
+              </FormControl>
             </FormItem>
           )}
         />
@@ -191,6 +288,8 @@ const FormComplaint = () => {
                 <Input
                   placeholder="Masukkan deskripsi permasalahan Anda"
                   {...field}
+                  value={field.value || ""} 
+                  onClick={handleInputClick} 
                 />
               </FormControl>
             </FormItem>

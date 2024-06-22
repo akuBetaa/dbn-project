@@ -29,7 +29,7 @@ const Navbar = () => {
   };
 
   return (
-    <div className="">
+    <div className="px-14 py-2">
       <nav className="container text-gray-800 md:flex justify-between">
         {/* Logo and Mobile Menu Button */}
         <div className="flex items-center justify-between p-5">

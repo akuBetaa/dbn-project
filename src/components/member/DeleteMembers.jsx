@@ -33,7 +33,7 @@ const DeleteMembers = ({ memberId, memberName, onDeleteSuccess }) => {
       });
 
       if (response.data.status) {
-        toast.success(response.data.message, {
+        toast.success("Hapus Data Berhasil!", {
           style: {
             backgroundColor: 'green',
             color: 'white',
