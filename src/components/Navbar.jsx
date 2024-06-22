@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { FaBars, FaTimes, FaChevronDown } from "react-icons/fa";
 import ImageLogo from "@/assets/logo-dbn.png";
 import {
@@ -11,14 +11,42 @@ import {
   NavigationMenuLink,
   NavigationMenuViewport,
 } from "@/components/ui/navigation-menu";
-
-import { Button } from "@/components/ui/button";
-import Login from "@/components/Login";
 import AuthPage from "@/pages/AuthPage";
+import axios from "axios";
+import AvatarProfile from "@/components/AvatarProfile";
+import { jwtDecode } from "jwt-decode"; 
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  const [user, setUser] = useState(null); 
+
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    if (token) {
+      try {
+        const decodedToken = jwtDecode(token); 
+        console.log('Decoded token:', decodedToken);
+        setUser({
+          id: decodedToken.id ?? "",
+          name: decodedToken.name ?? "",
+          role: decodedToken.role ?? "",
+        });
+      } catch (error) {
+        console.error("Failed to decode token", error);
+      }
+    }
+  }, []);
+
+  const logout = () => {
+    localStorage.removeItem('token');
+    navigate("/");
+    console.log("yey berhasil logout")
+    setUser(null); 
+  };
 
   const toggleMenu = () => {
     setIsOpen(!isOpen);
@@ -29,7 +57,7 @@ const Navbar = () => {
   };
 
   return (
-    <div className="px-14 py-2">
+    <div className="md:px-14 py-2">
       <nav className="container text-gray-800 md:flex justify-between">
         {/* Logo and Mobile Menu Button */}
         <div className="flex items-center justify-between p-5">
@@ -87,11 +115,13 @@ const Navbar = () => {
           </div>
         </div>
         <div className="hidden md:flex items-center justify-between px-5">
-          {/* <Button className="bg-foreground hover:bg-muted-foreground">
-              Login
-          </Button> */}
-          {/* <Login /> */}
-          <AuthPage />
+          {user ? (
+            <>
+              <AvatarProfile name={user.name} role={user.role} imageUrl={user.imageUrl} onLogout={logout}/>
+            </>
+          ) : (
+            <AuthPage />
+          )}
         </div>
 
         {/* Mobile Menu */}
@@ -132,14 +162,13 @@ const Navbar = () => {
                 </ul>
               )}
             </div>
-            {/* <Link
-              to="/login"
-              className="w-full px-4 py-2 hover:bg-gray-400 hover:text-white rounded-md"
-            >
-              Login
-            </Link> */}
-            {/* <Login /> */}
+            {user ? (
+            <>
+              <AvatarProfile name={user.name} role={user.role} imageUrl={user.imageUrl} onLogout={logout}/>
+            </>
+          ) : (
             <AuthPage />
+          )}
           </div>
         )}
       </nav>
