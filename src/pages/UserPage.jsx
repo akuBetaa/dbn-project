@@ -8,6 +8,7 @@ import { Select } from "@/components/ui/select";
 import toast, { Toaster } from "react-hot-toast";
 import { Skeleton } from "@/components/ui/skeleton";
 import { jwtDecode } from "jwt-decode";
+import { Link } from "react-router-dom";
 
 const UserPage = () => {
     const [user, setUser] = useState([]);
@@ -26,26 +27,30 @@ const UserPage = () => {
 
     const fetchUser = async () => {
         setLoading(true); // Set loading true saat sedang memuat data
-    
+
         try {
             const token = localStorage.getItem('token');
             if (!token) {
                 console.error("Token tidak ditemukan");
                 return;
             }
-    
+
             const response = await axios.get("https://team-a-spk-internet-service-provider.vercel.app/api/v1/memberships/", {
                 headers: {
                     Authorization: `Bearer ${token}`,
                 }
             });
-    
+
             console.log("API Response:", response.data);
-    
-            if (response.data.status && response.data.data.length > 0) {
+
+            if (response.data.status && Array.isArray(response.data.data) && response.data.data.length > 0) {
                 // Jika ada data yang ditemukan dari API
                 setUser(response.data.data);
                 console.log("List Data Pelanggan berhasil tampil:", response.data.data);
+            } else if (response.data.data === "membership data is empty") {
+                // Jika data berisi string "membership data is empty"
+                console.warn("Data pelanggan kosong atau tidak ditemukan");
+                setUser([]); // Atur user menjadi array kosong
             } else {
                 // Jika tidak ada data yang ditemukan dari API
                 console.warn("Data pelanggan kosong atau tidak ditemukan");
@@ -59,7 +64,8 @@ const UserPage = () => {
             setLoading(false); // Set loading false setelah selesai memuat data
         }
     };
-    
+
+
 
     const handleEdit = () => {
         setIsEditing(true);
@@ -249,7 +255,7 @@ const UserPage = () => {
                                 </TableRow>
                             </TableBody>
                         ) : (
-                            user && user.length > 0 ? (
+                            user && user.length > 0 ? ( // Perubahan bagian ini
                                 user.map((data) => (
                                     <TableBody key={data.id}>
                                         <TableRow>
@@ -325,12 +331,19 @@ const UserPage = () => {
                                         </TableRow>
                                     </TableBody>
                                 ))
-                            ) : (
-                                // Jika tidak ada data aduan
+                            ) : ( // Bagian ini ditambahkan
                                 <TableBody>
                                     <TableRow>
-                                        <TableCell colSpan={2} className="text-center text-red-500 font-semibold">
-                                            Tidak ada data pelanggan
+                                        <TableCell colSpan={6} className="text-center text-red-500 font-semibold">
+                                            <p>
+                                                Belum ada pengajuan Permasalahan,
+                                            </p>
+                                            <p className="py-4">
+                                                Apabila ada permasalahan ajukan pada form berikut
+                                            </p>
+                                            <Link to="/layanan-pengaduan">
+                                                <Button>Form Pengajuan Permasalahan</Button>
+                                            </Link>
                                         </TableCell>
                                     </TableRow>
                                 </TableBody>
@@ -338,9 +351,9 @@ const UserPage = () => {
                         )}
                     </Table>
                 </div>
-
             </div>
         </UserLayout>
+
     );
 };
 

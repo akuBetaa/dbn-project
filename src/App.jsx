@@ -12,8 +12,8 @@ import ShowMembers from '@/components/ShowMembers';
 import UserPage from '@/pages/UserPage';
 
 import { jwtDecode } from 'jwt-decode';
-import Register from './components/Register';
-import AuthPage from './pages/AuthPage';
+import Register from '@/components/Register';
+import AuthPage from '@/pages/AuthPage';
 
 const App = () => {
   return (
