@@ -117,7 +117,7 @@ const EditMembers = ({ member, onSave }) => {
             />
           </div>
           <div className="flex flex-col gap-4">
-            <Label htmlFor="locationDistance">Jarak (km)</Label>
+            <Label htmlFor="locationDistance">Jarak (m)</Label>
             <Input
               id="locationDistance"
               type="text"

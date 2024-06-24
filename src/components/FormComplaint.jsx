@@ -262,7 +262,7 @@ const FormComplaint = () => {
           name="locationDistance"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Jarak Lokasi (km)</FormLabel>
+              <FormLabel>Jarak Lokasi (m)</FormLabel>
               <FormMessage />
               <FormControl>
                 <Input

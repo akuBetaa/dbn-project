@@ -97,7 +97,7 @@ const ListComplaint = () => {
             <TableHead className="">No</TableHead>
             <TableHead className="w-[130px]">Nama Lengkap</TableHead>
             <TableHead className="w-[150px]">Tanggal</TableHead>
-            <TableHead className="">Jarak (km)</TableHead>
+            <TableHead className="">Jarak (m)</TableHead>
             <TableHead>Permasalahan</TableHead>
             <TableHead>Biaya</TableHead>
             <TableHead>Deskripsi</TableHead>
