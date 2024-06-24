@@ -21,6 +21,7 @@ const EditMembers = ({ member, onSave }) => {
     locationDistance: member.locationDistance,
     problem: member.problem,
     description: member.description,
+    cost : member.cost,
     status: member.user.status,
   });
 
@@ -43,6 +44,7 @@ const EditMembers = ({ member, onSave }) => {
         problem: formData.problem,
         description: formData.description,
         status: formData.status,
+        cost : formData.cost,
         timeOfIncident: new Date().toISOString(), // or the correct value
       };
 
@@ -56,7 +58,7 @@ const EditMembers = ({ member, onSave }) => {
       });
 
       if (response.data.status) {
-        toast.success(response.data.message, {
+        toast.success("Data berhasil diubah", {
           style: {
             backgroundColor: 'green',
             color: 'white',
@@ -138,6 +140,16 @@ const EditMembers = ({ member, onSave }) => {
               <option value="SPEED_INCREASE">Penambahan Kecepatan</option>
               <option value="REPORT">Wifi Lemot</option>
             </select>
+          </div>
+          <div className="flex flex-col gap-4">
+            <Label htmlFor="cost">Biaya Bulanan</Label>
+            <Input
+              id="cost"
+              type="number"
+              value={formData.cost}
+              onChange={handleChange}
+              className="col-span-3"
+            />
           </div>
           <div className="flex flex-col gap-4">
             <Label htmlFor="description">Deskripsi</Label>

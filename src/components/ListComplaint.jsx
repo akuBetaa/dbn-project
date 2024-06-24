@@ -11,6 +11,7 @@ import {
 import EditMembers from "@/components/member/EditMembers";
 import DeleteMembers from "@/components/member/DeleteMembers";
 import axios from "axios";
+import { DateTime } from 'luxon';
 
 const ListComplaint = () => {
   const [members, setMembers] = useState([]);
@@ -57,6 +58,11 @@ const ListComplaint = () => {
     return sortedComplaint;
   };
 
+  // waktu tanggal 
+  const formatDate = (isoString) => {
+    return DateTime.fromISO(isoString).setLocale('id').toFormat('d MMMM yyyy');
+  };
+
   const getStatusClassName = (status) => {
     switch (status) {
       case "PENDING":
@@ -88,12 +94,12 @@ const ListComplaint = () => {
         <TableCaption>Data Aduan Data Buana Nusantara - Kamil</TableCaption>
         <TableHeader>
           <TableRow>
-            <TableHead className="w-[50px]">No</TableHead>
+            <TableHead className="">No</TableHead>
             <TableHead className="w-[130px]">Nama Lengkap</TableHead>
             <TableHead className="w-[150px]">Tanggal</TableHead>
-            <TableHead>Alamat</TableHead>
-            <TableHead>Jarak</TableHead>
+            <TableHead className="">Jarak (km)</TableHead>
             <TableHead>Permasalahan</TableHead>
+            <TableHead>Biaya</TableHead>
             <TableHead>Deskripsi</TableHead>
             <TableHead>Status</TableHead>
             <TableHead></TableHead>
@@ -105,8 +111,7 @@ const ListComplaint = () => {
             <TableRow key={data.id}>
               <TableCell className="font-medium">{index + 1}</TableCell>
               <TableCell>{data.user.name}</TableCell>
-              <TableCell>{data.timeOfIncident}</TableCell>
-              <TableCell>{data.user.address}</TableCell>
+              <TableCell>{formatDate(data.timeOfIncident)}</TableCell>
               <TableCell>{data.locationDistance}</TableCell>
               <TableCell>
                 {data.problem === "INSTALLATION" ? "Pemasangan WIFI" :
@@ -115,6 +120,7 @@ const ListComplaint = () => {
                       data.problem === "SPEED_INCREASE" ? "Penambahan Kecepatan" :
                         data.problem === "REPORT" ? "Wifi Lemot" : ""}
               </TableCell>
+              <TableCell>{data.cost}</TableCell>
               <TableCell>{data.description}</TableCell>
               <TableCell className={getStatusClassName(data.status)}>
                 {data.status === "PENDING" ? "belum dikerjakan" :
@@ -122,8 +128,8 @@ const ListComplaint = () => {
                     data.status === "FINISHED" ? "selesai" : ""}
               </TableCell>
               <TableCell className="flex flex-col md:flex-row justify-center items-center gap-2">
-              <EditMembers
-                  member={data} 
+                <EditMembers
+                  member={data}
                   onSave={handleSave} />
                 <DeleteMembers
                   memberId={data.id}

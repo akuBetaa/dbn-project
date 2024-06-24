@@ -14,7 +14,7 @@ const Layout = ({ children, ...props }) => {
 // LeftContent component
 const LeftContent = ({ children, ...props }) => {
   return (
-    <div className="bg-gray-100 p-4" {...props}>
+    <div className=" p-4" {...props}>
       {children}
     </div>
   );
