@@ -101,7 +101,7 @@ const FormComplaint = () => {
       problem: data.problem,
       description: data.description,
       timeOfIncident: timeOfIncidentRef.current,
-      cost: 200,
+      cost: 100000,
       status: "PENDING"
     };
     
@@ -266,7 +266,7 @@ const FormComplaint = () => {
               <FormMessage />
               <FormControl>
                 <Input
-                  placeholder="Masukkan jarak rumah dengan DBN Kamil dalam satuan km"
+                  placeholder="Masukkan jarak rumah dengan DBN Kamil dalam satuan m"
                   {...field}
                   value={field.value || ""} 
                   onChange={(e) => field.onChange(parseInt(e.target.value, 10))} // Konversi ke int saat input
