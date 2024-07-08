@@ -44,8 +44,9 @@ Website ini merupakan layanan pengaduan masalah pengguna dan merangking permasal
 - **Postman**
 
 ## Kontribusi
-- **Frontend**: Akubetaa
-- **Backend**: Viery
+- **Frontend**: [@akuBetaa](https://github.com/akuBetaa/)
+- **Backend**: [@vierynugroho](https://github.com/vierynugroho)
+- **Dokumentasi**: [@danilafitria]()
 
 ## Repositori
 
