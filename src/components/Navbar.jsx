@@ -145,7 +145,7 @@ const Navbar = () => {
                 <ul className="p-2 rounded-md shadow-lg space-y-2">
                   <li>
                     <Link
-                      to="/pengaduan"
+                      to="/layanan-pengaduan"
                       className="block px-4 py-2 hover:bg-gray-600 hover:text-white rounded-md"
                     >
                       Layanan Pengaduan
